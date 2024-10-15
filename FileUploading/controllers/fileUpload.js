@@ -7,10 +7,11 @@ const cloudinary = require("cloudinary").v2;
 exports.localFileUpload = async(req, res) =>{
     try {
         const file = req.files.file;
-        console.log("FILE AA GAYEE :->", file);
+        // console.log("FILE AA GAYEE :->", file);
 
         let path = __dirname + "/files/" + Date.now();
-        console.log("PATH->", path);
+        // console.log("PATH->", path);
+
         file.mv(path, (err) =>{
             console.log(err);
         });
@@ -43,10 +44,10 @@ async function uploadFileToCloudinary(file, folder, quality){
 exports.imageUpload = async(req, res) =>{
     try {
         const{name, tags, email} = req.body;
-        console.log(name, tags, email);
+        // console.log(name, tags, email);
 
         const file = req.files.imageFile;
-        console.log(file);
+        // console.log(file);
 
         // Validation of file type
         const supportedTypes = ["jpg", "jpeg", "png"];
@@ -59,9 +60,9 @@ exports.imageUpload = async(req, res) =>{
             })
         }
 
-        console.log("Uploading file to Cloudinary")
+        // console.log("Uploading file to Cloudinary")
         const response = await uploadFileToCloudinary(file, "SaurabhYadav");
-        console.log(response);
+        // console.log(response);
 
         //Create DB Entry
         const fileData = await File.create({
@@ -103,18 +104,18 @@ exports.videoUpload = async(req, res) =>{
         }
 
         const response = await uploadFileToCloudinary(file, "SaurabhYadav");
-        console.log(response);
+        console.log("RESPONSE : ", response);
 
         const fileData = await File.create({
             name, 
             tags,
             email,
-            videoUrl:response.secure_url,
+            imageUrl:response.secure_url,
         });
 
         res.json({
             success: true,
-            videoUrl:response.secure_url,
+            imageUrl:response.secure_url,
             message:"Video uploaded successfully"
         })
     } catch (error) {
